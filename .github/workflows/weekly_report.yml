@@ -1,9 +1,8 @@
 name: 'Weekly report schedule'
 
 on:
-  push:
-    branches: 
-      - master
+  watch:
+    types: [started]
   schedule:
     - cron: '0 2 * * 5' # UTC+8 每周五10点
 
@@ -14,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: 'Set up Python'
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: 3.7
       # - name: 'Install dependencies'

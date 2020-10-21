@@ -6,7 +6,7 @@ Some tools for NK OA
 
 ## Usage
 1. fork本项目
-2. 点击项目中 Seeting->Secrets->New Secrets 添加参数
+2. 点击项目中 Setting->Secrets->New Secrets 添加参数
 
 - weekly_report 参数列表
 
