@@ -22,12 +22,15 @@ LOG_FILE = os.path.join(BASE_DIR, 'weekly_report.log')
 def initLog():
     logging.getLogger().setLevel(logging.INFO)
     _logger = logging.getLogger('Weekly')
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    console.setFormatter(
-        logging.Formatter(
-            '[%(asctime)s] ::%(name)s::%(levelname)s:: %(message)s'))
-    _logger.addHandler(console)
+    # 控制台日志(debug环境才输出)
+    if 'NK_DEBUG' in os.environ:
+        console = logging.StreamHandler()
+        console.setLevel(logging.INFO)
+        console.setFormatter(
+            logging.Formatter(
+                '[%(asctime)s] ::%(name)s::%(levelname)s:: %(message)s'))
+        _logger.addHandler(console)
+    # 文件日志
     filehandler = logging.FileHandler(LOG_FILE, 'a', encoding='utf-8')
     filehandler.setLevel(logging.INFO)
     filehandler.setFormatter(
