@@ -1,0 +1,42 @@
+name: 'Weekly report schedule'
+
+on:
+  push:
+    branches: 
+      - master
+  schedule:
+    - cron: '0 2 * * 5' # UTC+8 每周五10点
+
+jobs:
+  weekly_report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: 'Set up Python'
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      # - name: 'Install dependencies'
+      #   run: python -m pip install --upgrade pip
+      - name: 'Install requirements'
+        run: pip install -r ./weekly_report/requirements.txt
+      - name: 'Run'
+        env:
+          OA_USERNAME: ${{ secrets.OA_USERNAME }}
+          OA_PASSWORD: ${{ secrets.OA_PASSWORD }}
+          OA_IS_SUBMIT: ${{ secrets.OA_IS_SUBMIT }}
+          TZ: Asia/Shanghai
+        run: python ./weekly_report/main.py
+      - name: 'Send mail'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: mail.northking.net
+          server_port: 587
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: OA weekly report
+          body: file://weekly_report.log
+          to: ${{ secrets.RECEIVER }}
+          from: GitHub Actions
+          content_type: text/plain
