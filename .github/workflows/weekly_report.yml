@@ -1,8 +1,8 @@
 name: Weekly report schedule
 
 on:
-  watch:
-    types: [started]
+  # watch:
+  #   types: [started]
   schedule:
     - cron: '0 2 * * 5' # UTC+8 每周五10点
 
