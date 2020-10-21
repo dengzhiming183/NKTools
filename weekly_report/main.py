@@ -11,9 +11,12 @@ import time
 
 import requests
 
-import holidays
-
 BASE_DIR = sys.path[0]
+sys.path.append(os.path.join(BASE_DIR, ".."))
+
+from utils import holidays, sendmail
+
+LOG_FILE = os.path.join(BASE_DIR, 'weekly_report.log')
 
 
 def initLog():
@@ -25,8 +28,7 @@ def initLog():
         logging.Formatter(
             '[%(asctime)s] ::%(name)s::%(levelname)s:: %(message)s'))
     _logger.addHandler(console)
-    filehandler = logging.FileHandler(os.path.join(
-        BASE_DIR, 'weekly_report.log'), 'a', encoding='utf-8')
+    filehandler = logging.FileHandler(LOG_FILE, 'a', encoding='utf-8')
     filehandler.setLevel(logging.INFO)
     filehandler.setFormatter(
         logging.Formatter(
@@ -238,3 +240,7 @@ if __name__ == '__main__':
     weekly_report = WeeklyReport()
     weekly_report.run()
     logger.info('*'*log_num + ' end ' + '*'*log_num)
+    email = sendmail.Email()
+    email.append_receivers(email.sender)
+    with open(LOG_FILE, 'r', encoding='utf-8') as f:
+        email.send('Weekly report schedule', f.read())
