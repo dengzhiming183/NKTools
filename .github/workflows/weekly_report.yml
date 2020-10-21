@@ -1,4 +1,4 @@
-name: 'Weekly report schedule'
+name: Weekly report schedule
 
 on:
   watch:
@@ -12,30 +12,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: 'Set up Python'
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
-      # - name: 'Install dependencies'
+      # - name: Install dependencies
       #   run: python -m pip install --upgrade pip
-      - name: 'Install requirements'
+      - name: Install requirements
         run: pip install -r ./weekly_report/requirements.txt
-      - name: 'Run'
+      - name: Run
         env:
           OA_USERNAME: ${{ secrets.OA_USERNAME }}
           OA_PASSWORD: ${{ secrets.OA_PASSWORD }}
           OA_IS_SUBMIT: ${{ secrets.OA_IS_SUBMIT }}
           TZ: Asia/Shanghai
         run: python ./weekly_report/main.py
-      - name: 'Send mail'
-        uses: dawidd6/action-send-mail@master
-        with:
-          server_address: mail.northking.net
-          server_port: 587
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: OA weekly report
-          body: file://weekly_report.log
-          to: ${{ secrets.RECEIVER }}
-          from: GitHub Actions
-          content_type: text/plain
+      # - name: Send mail
+      #   uses: dawidd6/action-send-mail@master
+      #   with:
+      #     server_address: smtp.northking.net
+      #     server_port: 587
+      #     username: ${{ secrets.MAIL_USERNAME }}
+      #     password: ${{ secrets.MAIL_PASSWORD }}
+      #     subject: OA weekly report
+      #     body: file://weekly_report/weekly_report.log
+      #     to: ${{ secrets.MAIL_RECEIVER }}
+      #     from: GitHub Actions
+      #     content_type: text/plain
